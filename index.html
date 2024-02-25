@@ -1,92 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Screen Slideshow</title>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Screen Slideshow with Fade-in</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
 
-        #slideshow-container {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+    #slideshow-container {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-        .slide {
-            display: none;
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            position: absolute;
-            opacity: 0;
-            transition: opacity 1s ease-in-out; /* Add transition for smooth fade */
-        }
+    .slide {
+      opacity: 0; /* Initial opacity set to 0 for hidden state */
+      transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+    }
 
-        .slide.active {
-            opacity: 1;
-        }
-    </style>
+    .slide.active {
+      opacity: 1; /* Opacity set to 1 for visible state */
+    }
+  </style>
 </head>
 <body>
-    <div id="slideshow-container">
-        <img class="slide active" src="img1.jpg" alt="Slide 1">
-        <img class="slide" src="img2.jpg" alt="Slide 2">
-        <img class="slide" src="img3.jpg" alt="Slide 3">
-        <img class="slide" src="img4.jpg" alt="Slide 4">
-        <img class="slide" src="img5.jpg" alt="Slide 5">
-        <img class="slide" src="img6.jpg" alt="Slide 6">
-        <img class="slide" src="img7.jpg" alt="Slide 7">
-        <!-- Add more images as needed -->
+  <div id="slideshow-container">
+    <img class="slide" src="img1.jpg" alt="Slide 1">
+    <img class="slide" src="img2.jpg" alt="Slide 2">
+    <img class="slide" src="img3.jpg" alt="Slide 3">
+    <img class="slide" src="img4.jpg" alt="Slide 4">
+    <img class="slide" src="img5.jpg" alt="Slide 5">
+    <img class="slide" src="img6.jpg" alt="Slide 6">
+    <img class="slide" src="img7.jpg" alt="Slide 7">
+  </div>
 
-        <!-- You can also add captions for each image -->
-        <!-- <div class="caption">Caption for Slide 1</div> -->
-    </div>
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
 
-    <script>
-        // JavaScript for the slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active'); // Remove active class from all slides
+      });
+      slides[index].classList.add('active'); // Add active class to current slide
+    }
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                if (i === index) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
-            });
-        }
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
 
-        function fadeIn(element, duration) {
-            let start = null;
-            function step(timestamp) {
-                if (!start) start = timestamp;
-                const progress = timestamp - start;
-                element.style.opacity = progress / duration;
-                if (progress < duration) {
-                    requestAnimationFrame(step);
-                }
-            }
-            requestAnimationFrame(step);
-        }
+    // Auto-advance to the next slide every 5 seconds (5000 milliseconds)
+    setInterval(nextSlide, 5000);
 
-        function nextSlide() {
-            const prevSlide = currentSlide;
-            currentSlide = (currentSlide + 1) % slides.length;
-            fadeIn(slides[currentSlide], 1000); // 1000 milliseconds (1 second) for fade-in
-            showSlide(currentSlide);
-            slides[prevSlide].style.opacity = 0; // Reset opacity for the previous slide
-        }
-
-        // Auto-advance to the next slide every 5 seconds (5000 milliseconds)
-        setInterval(nextSlide, 5000);
-
-        // Show the
+    // Show the first slide initially with the active class
+    showSlide(currentSlide);
+  </script>
+</body>
+</html>
