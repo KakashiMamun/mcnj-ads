@@ -33,7 +33,6 @@
         .slide.active {
             opacity: 1;
         }
-
     </style>
 </head>
 <body>
@@ -66,17 +65,28 @@
             });
         }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+        function fadeIn(element, duration) {
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                element.style.opacity = progress / duration;
+                if (progress < duration) {
+                    requestAnimationFrame(step);
+                }
+            }
+            requestAnimationFrame(step);
         }
-        
+
+        function nextSlide() {
+            const prevSlide = currentSlide;
+            currentSlide = (currentSlide + 1) % slides.length;
+            fadeIn(slides[currentSlide], 1000); // 1000 milliseconds (1 second) for fade-in
+            showSlide(currentSlide);
+            slides[prevSlide].style.opacity = 0; // Reset opacity for the previous slide
+        }
 
         // Auto-advance to the next slide every 5 seconds (5000 milliseconds)
         setInterval(nextSlide, 5000);
 
-        // Show the first slide initially
-        showSlide(currentSlide);
-    </script>
-</body>
-</html>
+        // Show the
