@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Slideshow</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        #slideshow-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="slideshow-container">
+        <img class="slide" src="image1.jpg" alt="Slide 1">
+        <img class="slide" src="image2.jpg" alt="Slide 2">
+        <!-- Add more images as needed -->
+
+        <!-- You can also add captions for each image -->
+        <!-- <div class="caption">Caption for Slide 1</div> -->
+    </div>
+
+    <script>
+        // JavaScript for the slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.display = i === index ? 'block' : 'none';
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance to the next slide every 5 seconds (5000 milliseconds)
+        setInterval(nextSlide, 5000);
+
+        // Show the first slide initially
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
